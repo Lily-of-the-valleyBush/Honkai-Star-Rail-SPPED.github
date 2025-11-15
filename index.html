@@ -27,13 +27,30 @@
             display: block;
             margin-top: 10px;
         }
-        select, input, button {
+        select,button {
             width: 100%;
             font-size: 18px;
             padding: 10px;
             margin-top: 8px;
             border-radius: 8px;
         }
+        select, button {
+            width: 100%;
+            font-size: 18px;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+        }
+        input[type=number] {
+            width: 94.6%;    
+            font-size: 18px;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+
+             -moz-appearance: textfield;
+        }
+
         button {
             background: #007bff;
             color: white;
@@ -47,6 +64,19 @@
             font-size: 22px;
             margin-top: 20px;
         }
+        /* 数値入力の上下矢印を消す（Chrome, Edge, Safari） */
+        input[type=number]::-webkit-inner-spin-button,
+         input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox の矢印を消す */
+         input[type=number] {
+           -moz-appearance: textfield;
+        }
+
+
     </style>
 </head>
 <body>
