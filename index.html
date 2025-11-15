@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>スタレ 行動計算ツール</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            max-width: 480px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .box {
+            background: #f6f6f6;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        select, input, button {
+            width: 100%;
+            font-size: 18px;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+        button:active {
+            opacity: 0.8;
+        }
+        #result {
+            text-align: center;
+            font-size: 22px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>行動計算ツール</h1>
+
+<div class="box">
+
+    <label>ラウンド数（0〜10）</label>
+    <select id="round">
+        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+
+    <label>昼夜の狭間を翔ける鷹</label>
+    <select id="taka">
+        <option value="0">0</option>
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+
+    <label>ダンス！ダンス！ダンス！</label>
+    <select id="ddd">
+        <option value="0">0</option>
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+
+    <label>生命のウェンワーク</label>
+    <select id="wen">
+        <option value="0">なし</option>
+        <option value="1">あり</option>
+    </select>
+
+    <hr>
+
+    <label>速度 → 行動回数</label>
+    <input type="number" id="spd" placeholder="速度を入力" />
+
+    <button onclick="calcAction()">行動回数を計算</button>
+
+    <label>行動回数 → 速度</label>
+    <input type="number" id="act" placeholder="行動回数を入力" />
+
+    <button onclick="calcSpeed()">速度を計算</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function getBuff() {
+    const takaCount = Number(document.getElementById("taka").value);
+    const dddCount = Number(document.getElementById("ddd").value);
+    const wen = Number(document.getElementById("wen").value);
+
+    const takaBuff = takaCount * 0.25;
+    const dddBuff = dddCount * 0.24;
+    const wenBuff = wen * 0.4;
+
+    return takaBuff + dddBuff + wenBuff;
+}
+
+// 速度 → 行動回数
+function calcAction() {
+    const spd = Number(document.getElementById("spd").value);
+    const round = Number(document.getElementById("round").value);
+    const buff = getBuff();
+
+    if (isNaN(spd)) {
+        document.getElementById("result").innerHTML = "速度を入力してください";
+        return;
+    }
+
+    const action = spd * (150 + round * 100) / (10000 * (round + 1)) + buff;
+
+    document.getElementById("result").innerHTML =
+        `行動回数：${Math.floor(action)}`;
+}
+
+// 行動回数 → 速度
+function calcSpeed() {
+    const act = Number(document.getElementById("act").value);
+    const round = Number(document.getElementById("round").value);
+    const buff = getBuff();
+
+    if (isNaN(act)) {
+        document.getElementById("result").innerHTML = "行動回数を入力してください";
+        return;
+    }
+
+    const speed = (act - buff) * 10000 * (round + 1) / (150 + round * 100);
+
+    document.getElementById("result").innerHTML =
+        `必要速度：${speed.toFixed(2)}`;
+}
+</script>
+
+</body>
+</html>
