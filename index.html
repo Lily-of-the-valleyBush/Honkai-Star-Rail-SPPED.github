@@ -27,13 +27,6 @@
             display: block;
             margin-top: 10px;
         }
-        select,button {
-            width: 100%;
-            font-size: 18px;
-            padding: 10px;
-            margin-top: 8px;
-            border-radius: 8px;
-        }
         select, button {
             width: 100%;
             font-size: 18px;
@@ -42,15 +35,13 @@
             border-radius: 8px;
         }
         input[type=number] {
-            width: 94.6%;    
+            width: 94.6%;
             font-size: 18px;
             padding: 10px;
             margin-top: 8px;
             border-radius: 8px;
-
-             -moz-appearance: textfield;
+            -moz-appearance: textfield;
         }
-
         button {
             background: #007bff;
             color: white;
@@ -65,20 +56,39 @@
             margin-top: 20px;
         }
         input[type=number]::-webkit-inner-spin-button,
-         input[type=number]::-webkit-outer-spin-button {
+        input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-         input[type=number] {
-           -moz-appearance: textfield;
+
+        /* ▼ タブ */
+        .mode-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            gap: 10px;
         }
-
-
+        .mode-tabs button {
+            padding: 6px 20px;
+            border: 1px solid #333;
+            background: white;
+            font-size: 18px;
+            border-radius: 6px;
+        }
+        .mode-tabs button.active {
+            background: #e0e0e0;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <h1>行動計算ツール</h1>
+
+<div class="mode-tabs">
+    <button id="tab-uraniwa" class="active">裏庭</button>
+    <button id="tab-isou">異相</button>
+</div>
 
 <div class="box">
 
@@ -131,6 +141,23 @@
 </div>
 
 <script>
+let baseValue = 150; // 裏庭=150 / 異相=300
+
+document.getElementById("tab-uraniwa").onclick = () => {
+    baseValue = 150;
+    setActive("tab-uraniwa");
+};
+document.getElementById("tab-isou").onclick = () => {
+    baseValue = 300;
+    setActive("tab-isou");
+};
+
+function setActive(id) {
+    document.getElementById("tab-uraniwa").classList.remove("active");
+    document.getElementById("tab-isou").classList.remove("active");
+    document.getElementById(id).classList.add("active");
+}
+
 function getBuff() {
     const takaCount = Number(document.getElementById("taka").value);
     const dddCount = Number(document.getElementById("ddd").value);
@@ -154,10 +181,10 @@ function calcAction() {
         return;
     }
 
-    const action = spd * (150 + round * 100) / (10000 * (round + 1)) + buff;
+    const action =
+        spd * (baseValue + round * 100) / (10000 * (round + 1)) + buff;
 
-    document.getElementById("result").innerHTML =
-        `行動回数：${Math.floor(action)}`;
+    document.getElementById("result").innerHTML = `行動回数：${Math.floor(action)}`;
 }
 
 // 行動回数 → 速度
@@ -171,7 +198,8 @@ function calcSpeed() {
         return;
     }
 
-    const speed = (act - buff) * 10000 * (round + 1) / (150 + round * 100);
+    const speed =
+        (act - buff) * 10000 * (round + 1) / (baseValue + round * 100);
 
     document.getElementById("result").innerHTML =
         `必要速度：${speed.toFixed(1)}`;
